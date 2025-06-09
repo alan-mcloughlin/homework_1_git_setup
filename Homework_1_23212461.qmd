@@ -31,12 +31,12 @@ data(diamonds)
 library(knitr)
 
 # Get first 5 rows
-diamonds_5 <- head(diamonds, 5)
+diamonds_10 <- head(diamonds, 10)
 
 # Create table
-kable(diamonds_5,
+kable(diamonds_10,
       align = "cc",
-      caption = "First 5 Observations of the Diamonds Dataset")
+      caption = "First 10 Observations of the Diamonds Dataset")
 ```
 :::
 
