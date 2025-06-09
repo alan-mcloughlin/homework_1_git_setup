@@ -23,7 +23,7 @@ library(ggplot2)
 data(diamonds)
 ```
 
-## *Understanding Dataset*
+## *Understanding Dataset (Diamonds)*
 
 ::: {#tbl-diamonds .table-captioned}
 ```{r}
