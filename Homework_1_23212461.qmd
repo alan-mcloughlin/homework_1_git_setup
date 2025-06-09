@@ -1,0 +1,138 @@
+---
+title: "STAT40830 - Homework 1"
+author: "Alan McLoughlin - 23212461"
+format: pdf
+date: today
+date-format: long
+editor: visual
+header-includes:
+  - \usepackage{xcolor}
+echo: false
+---
+
+# Dataset Chosen - diamonds
+
+## *Overview*
+
+For the purpose of this analysis, I will use the **Diamonds** dataset, which is a dataset that comes built-in with the \textcolor{green}{ggplot2} package. This dataset contains information about *53,940* round-cut diamonds, with *10* variables measuring various pieces of information about the diamonds.
+
+```{r}
+## Load in ggplot2
+library(ggplot2)
+
+## Ude diamonds dataset
+data(diamonds)
+```
+
+## *Understanding Dataset*
+
+::: {#tbl-diamonds .table-captioned}
+```{r}
+# Load knitr package
+library(knitr)
+
+# Get first 5 rows
+diamonds_5 <- head(diamonds, 5)
+
+# Create table
+kable(diamonds_5,
+      align = "cc",
+      caption = "First 5 Observations of the Diamonds Dataset")
+```
+:::
+
+As shown in @tbl-diamonds, the diamonds dataset has the following 10 variables:
+
+-   \textcolor{red}{\textbf{carat - }}Weight of diamond.
+-   \textcolor{red}{\textbf{cut - }}Quality of the cut.
+-   \textcolor{red}{\textbf{color - }}Colour of the diamond.
+-   \textcolor{red}{\textbf{clarity - }}Measurement of how clear diamond is.
+-   \textcolor{red}{\textbf{depth - }}Total depth percentage.
+-   \textcolor{red}{\textbf{table - }}Width of top of diamond relative to widest point.
+-   \textcolor{red}{\textbf{price - }}Price (\$).
+-   \textcolor{red}{\textbf{x - }}Length (mm).
+-   \textcolor{red}{\textbf{y - }}Width (mm).
+-   \textcolor{red}{\textbf{z - }}Depth (mm).
+
+## *Descriptive Statistics*
+
+In plot section, the numeric variables *price*, *x*, *y* and *z* are used. The below output shows summary stats for each of these variables.
+
+```{r}
+# Produce Ssummry stats
+summary(diamonds[, c("price", "x", "y", "z")])
+```
+
+The average price is \$3,933, and the mean is greater than median, suggesting price is positively skewed. The middle 50% of diamonds are priced between \$950 and \$5,324. Looking at length (x), width (y) and depth (z) of diamonds, all appear to be fairly normally distributed as mean is almost equal median. Depth appears to be the smallest dimension on average, as the middle 50% of values lie between 2.910mm and 4.040mm, which are both lower than for length and width. However, the max of depth is greater than length, suggesting depth has some significant outliers. The max value of width is also large, suggesting this measurement also has extreme outliers.
+
+# Plots
+
+## *Average price per cut*
+
+@fig-avg shows the average price of a diamond for each cut (*Fair, Good, Very Good, Premium, Ideal*). To create this, a table was created storing the average price per cut, and then the bar chart was plotted using \textcolor{green}{ggplot2}.
+
+Looking at the output, the Premium cut has the highest average price (\$4,584), followed closely by fair (\$4,359). The lowest average price was seen for the ideal cut (\$3,458).
+
+```{r}
+#| label: fig-avg
+#| fig-width: 12
+#| fig-height: 5
+#| fig-cap: "Average diamond price per cut"
+
+# Install dplyr package
+suppressMessages(library(dplyr)) # functions for data manipulation
+
+# Calculate average price per cut
+avg_price_per_cut <- diamonds |>
+  group_by(cut) |>
+  summarize(avg_price = mean(price))
+
+# Create the bar chart
+ggplot(avg_price_per_cut, aes(x = cut, y = avg_price)) +
+  geom_bar(stat = "identity", fill = "red") +
+  geom_text(aes(label = round(avg_price, 0)), vjust = -0.5, size = 4) +
+  labs(x = "Cut",
+       y = "Average Price (USD)") +
+  theme_bw() +
+  theme(
+    axis.title.x = element_text(size = 16), 
+    axis.title.y = element_text(size = 16), 
+    axis.text.x  = element_text(size = 14),   
+    axis.text.y  = element_text(size = 14)    
+  )
+```
+
+## *Boxplots of length (x), width (y) and depth (z)*
+
+@fig-box shows boxplots for the variables length (x), width (y) and depth (z). Boxplots were created using \textcolor{green}{ggplot2}, and plots were placed size by side using \textcolor{green}{gridExtra}.
+
+Looking at output produced, all three dimensions look to be fairly normally distributed. Width (y) and depth (z) appear to have some extreme outliers, for example one diamond has a width of just under 60mm, while another has a width over 30mm. All have a value of 0mm, which suggests data input error or really small diamonds. Overall, length appears to be the most stable measurement, with most values falling within bounds of (Q1−1.5×IQR, Q1+1.5×IQR).
+
+```{r}
+#| label: fig-box
+#| fig-width: 12
+#| fig-height: 5
+#| fig-cap: "Boxplots of length (x), width (y) and depth (z)"
+
+# Use gridExtra for putting plots beside each other
+suppressMessages(library(gridExtra))
+
+# Create individual ggplot boxplots
+p1 <- ggplot(diamonds, aes(y = x)) +
+  geom_boxplot(fill = "yellow") +
+  labs(title = "x") +
+  theme_dark()
+
+p2 <- ggplot(diamonds, aes(y = y)) +
+  geom_boxplot(fill = "orange") +
+  labs(title = "y") +
+  theme_dark()
+
+p3 <- ggplot(diamonds, aes(y = z)) +
+  geom_boxplot(fill = "brown") +
+  labs(title = "z") +
+  theme_dark()
+
+# Arrange plots side by side
+grid.arrange(p1, p2, p3, ncol = 3)
+```
