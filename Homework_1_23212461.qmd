@@ -1,6 +1,6 @@
 ---
 title: "STAT40830 - Homework 1"
-author: "Alan McLoughlin - 23212461"
+author: "Alan McLoughlin"
 format: pdf
 date: today
 date-format: long
