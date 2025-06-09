@@ -12,7 +12,7 @@ echo: false
 
 # Dataset Chosen - diamonds
 
-## *Overview*
+## Introduction
 
 For the purpose of this analysis, I will use the **Diamonds** dataset, which is a dataset that comes built-in with the \textcolor{green}{ggplot2} package. This dataset contains information about *53,940* round-cut diamonds, with *10* variables measuring various pieces of information about the diamonds.
 
