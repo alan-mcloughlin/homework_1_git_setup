@@ -9,7 +9,7 @@ header-includes:
 echo: false
 ---
 
-# Dataset Chosen - diamonds
+# diamonds (Chosen Dataset)
 
 ## Introduction
 
