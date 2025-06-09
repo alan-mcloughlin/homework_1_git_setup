@@ -2,7 +2,6 @@
 title: "STAT40830 - Homework 1"
 author: "Alan McLoughlin"
 format: pdf
-date: today
 date-format: long
 editor: visual
 header-includes:
